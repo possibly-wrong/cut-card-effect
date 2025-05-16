@@ -83,12 +83,12 @@ struct Game
                 }
                 BJHand hand{};
                 int pair_card = 0;
-                for (int c = 1; c <= 10; ++c)
+                for (int card = 1; card <= 10; ++card)
                 {
-                    for (int i = 0; i < s.hand[c]; ++i)
+                    for (int i = 0; i < s.hand[card]; ++i)
                     {
-                        hand.deal(c);
-                        pair_card = c;
+                        hand.deal(card);
+                        pair_card = card;
                     }
                 }
                 int option = BJ_HIT;
@@ -136,6 +136,14 @@ struct Game
     State stand(State s, const BJHand& hand)
     {
         ++s.hand[0];
+        for (int card = 1; card <= 10; ++card)
+        {
+            s.hand[card] = 0;
+        }
+        if (s.pair_card != 0)
+        {
+            s.hand[s.pair_card] = 1;
+        }
         if (hand.getCount() <= 21)
         {
             s.stand = 1; // need to play dealer's hand
@@ -166,12 +174,12 @@ struct Game
     State split(State s)
     {
         ++s.round[0];
-        for (int c = 1; c <= 10; ++c)
+        for (int card = 1; card <= 10; ++card)
         {
-            if (s.hand[c] == 2)
+            if (s.hand[card] == 2)
             {
-                s.pair_card = c;
-                s.hand[c] = 1;
+                s.pair_card = card;
+                s.hand[card] = 1;
                 break;
             }
         }

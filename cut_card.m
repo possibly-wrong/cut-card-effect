@@ -72,6 +72,12 @@ rounds = Join[
       {player, dealer}, 2
       ], 2]
     ] // Union;
+
+rounds = Extract[rounds,
+   Position[
+    Min /@ Transpose[shoe - Transpose[rounds]],
+    _?NonNegative
+    ]];
     
 soln = LinearProgramming[
    ConstantArray[1, Length[rounds]],
